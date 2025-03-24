@@ -205,4 +205,134 @@ const consciousnessSlice = createSlice({
       if (insights?.length > 0) {
         state.insights.daily.push({
           insights,
-          timestamp: new Date().toISOString
+          timestamp: new Date().toISOString()
+        });
+      }
+    },
+    addToFavorites: (state, action) => {
+      state.meditations.favorites.push(action.payload);
+    },
+    removeFromFavorites: (state, action) => {
+      state.meditations.favorites = state.meditations.favorites.filter(
+        meditation => meditation.id !== action.payload
+      );
+    },
+    trackMood: (state, action) => {
+      const { mood, factors, notes } = action.payload;
+      state.moodTracking.history.push({
+        mood,
+        factors,
+        notes,
+        timestamp: new Date().toISOString()
+      });
+    },
+    addInsight: (state, action) => {
+      state.insights.daily.push({
+        ...action.payload,
+        timestamp: new Date().toISOString()
+      });
+    },
+    updateGoals: (state, action) => {
+      state.goals = {
+        ...state.goals,
+        ...action.payload
+      };
+    },
+    updatePreferences: (state, action) => {
+      state.preferences = {
+        ...state.preferences,
+        ...action.payload
+      };
+    },
+    addMilestone: (state, action) => {
+      state.journey.milestones.push({
+        ...action.payload,
+        achievedAt: new Date().toISOString()
+      });
+    },
+    addAchievement: (state, action) => {
+      state.journey.achievements.push({
+        ...action.payload,
+        unlockedAt: new Date().toISOString()
+      });
+    },
+    resetStreak: (state) => {
+      state.stats.currentStreak = 0;
+    },
+    resetConsciousnessState: () => initialState,
+  },
+  extraReducers: (builder) => {
+    builder
+      // Fetch Data
+      .addCase(fetchConsciousnessData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchConsciousnessData.fulfilled, (state, action) => {
+        state.loading = false;
+        return { ...state, ...action.payload };
+      })
+      .addCase(fetchConsciousnessData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      
+      // Update Data
+      .addCase(updateConsciousnessData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateConsciousnessData.fulfilled, (state, action) => {
+        state.loading = false;
+        return { ...state, ...action.payload };
+      })
+      .addCase(updateConsciousnessData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      
+      // Generate Meditations
+      .addCase(generateMeditations.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(generateMeditations.fulfilled, (state, action) => {
+        state.loading = false;
+        state.meditations.daily = action.payload;
+        state.lastUpdate = new Date().toISOString();
+      })
+      .addCase(generateMeditations.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      
+      // Log Session
+      .addCase(logMeditationSession.fulfilled, (state, action) => {
+        state.meditations.completed.push(action.payload);
+        state.lastUpdate = new Date().toISOString();
+      })
+      
+      // Fetch History
+      .addCase(fetchMeditationHistory.fulfilled, (state, action) => {
+        state.meditations.completed = action.payload;
+        state.lastUpdate = new Date().toISOString();
+      });
+  },
+});
+
+export const {
+  startMeditation,
+  completeMeditation,
+  addToFavorites,
+  removeFromFavorites,
+  trackMood,
+  addInsight,
+  updateGoals,
+  updatePreferences,
+  addMilestone,
+  addAchievement,
+  resetStreak,
+  resetConsciousnessState,
+} = consciousnessSlice.actions;
+
+export default consciousnessSlice.reducer;

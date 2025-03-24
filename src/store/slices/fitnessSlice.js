@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { db } from '../../config/firebase';
 import { doc, getDoc, updateDoc, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+import { AIService } from '../../services/AIService';
 
 const initialState = {
   loading: false,
@@ -265,4 +266,3 @@ export const {
 } = fitnessSlice.actions;
 
 export default fitnessSlice.reducer;
-      .addCase(fetchWorkoutHistory.

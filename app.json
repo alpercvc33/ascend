@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "ASCEND",
+    "slug": "ascend",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1A2B3C"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourname.ascend"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1A2B3C"
+      },
+      "package": "com.yourname.ascend"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "ASCEND uygulaması fotoğraflarınıza erişmek istiyor."
+        }
+      ]
+    ],
+    "sdkVersion": "52.0.0",
+    "entryPoint": "./src/App.js"
+  }
+}
